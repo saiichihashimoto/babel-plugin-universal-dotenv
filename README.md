@@ -6,7 +6,7 @@
 
 A shameless copy of [create-react-app's dotenv resolution](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#adding-development-environment-variables-in-env) as a babel plugin.
 
-## Adding Development Environment Variables In `.env`
+# Adding Development Environment Variables In `.env`
 
 To define permanent environment variables, create a file called `.env` in the root of your project:
 
@@ -18,7 +18,7 @@ SECRET_CODE=abcdef
 
 `.env` files **should be** checked into source control (with the exclusion of `.env*.local`).
 
-### What other `.env` files can be used?
+# What other `.env` files can be used?
 
 - `.env`: Default.
 - `.env.local`: Local overrides. **This file is loaded for all environments except test.**
