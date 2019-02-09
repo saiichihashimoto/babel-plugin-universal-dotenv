@@ -33,6 +33,40 @@ describe('babel-plugin-universal-dotenv', () => {
 
 	it('ignores unknown env vars', () => expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;'));
 
+	it('expands environment variables', () => {
+		process.env.TEST = 'TESTVALUE';
+
+		files = { '.env': 'KEY=$TEST' };
+
+		return expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "TESTVALUE";');
+	});
+
+	it('expands environment variables in curly braces', () => {
+		process.env.TEST = 'OTHERTESTVALUE';
+
+		files = { '.env': 'KEY=${TEST}' }; // eslint-disable-line no-template-curly-in-string
+
+		return expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "OTHERTESTVALUE";');
+	});
+
+	it('expands environment variables recursively', () => {
+		files = { '.env': 'KEY=VALUE\nOTHERKEY=$KEY/value' };
+
+		return expect(transformAsync('process.env.OTHERKEY;', options)).resolves.toHaveProperty('code', 'process.env.OTHERKEY || "VALUE/value";');
+	});
+
+	it('leaves environment variables alone', async() => {
+		process.env.KEY = 'AVALUE';
+		process.env.KEY2 = 'BVALUE';
+
+		files = { '.env': 'KEY=ANOTHERVALUE\nKEY3=CVALUE' };
+
+		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "ANOTHERVALUE";');
+		expect(process.env.KEY).toEqual('AVALUE');
+		expect(process.env.KEY2).toEqual('BVALUE');
+		expect(process.env.KEY3).toBeUndefined();
+	});
+
 	['development', '', 'nonsense'].forEach((NODE_ENV) => {
 		describe(`NODE_ENV=${NODE_ENV}`, () => {
 			beforeAll(() => {
