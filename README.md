@@ -5,7 +5,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Greenkeeper badge](https://badges.greenkeeper.io/saiichihashimoto/babel-plugin-universal-dotenv.svg)](https://greenkeeper.io/)
 
-A shameless copy of [create-react-app's dotenv resolution](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#adding-development-environment-variables-in-env) as a babel plugin.
+[create-react-app's dotenv resolution](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#adding-development-environment-variables-in-env) as a babel plugin.
 
 # Adding Development Environment Variables In `.env`
 
