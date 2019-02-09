@@ -10,7 +10,10 @@
     "type": "git",
     "url": "https://github.com/saiichihashimoto/babel-plugin-universal-dotenv.git"
   },
-  "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib --delete-dir-on-start --verbose --ignore **/*.spec.js",
     "test": "if [ -z \"$CI\" ]; then jest --watch; else jest --color --coverage; fi"
