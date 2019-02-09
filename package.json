@@ -9,8 +9,13 @@
     "type": "git",
     "url": "https://github.com/saiichihashimoto/babel-plugin-universal-dotenv.git"
   },
-  "main": "src/index.js",
+  "files": [
+    "./lib/*"
+  ],
+  "main": "./lib/index.js",
   "scripts": {
+    "build": "babel src --out-dir lib --delete-dir-on-start --verbose",
+    "prepublishOnly": "npm run build",
     "test": "if [ -z \"$CI\" ]; then jest --watch; else jest; fi"
   },
   "config": {
@@ -28,6 +33,7 @@
     "dotenv": "6.2.0"
   },
   "devDependencies": {
+    "@babel/cli": "7.2.3",
     "@babel/core": "7.2.2",
     "@babel/preset-env": "7.3.1",
     "cz-conventional-changelog": "2.1.0",
