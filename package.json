@@ -2,6 +2,13 @@
   "name": "babel-plugin-universal-dotenv",
   "version": "0.0.0-development",
   "description": "create-react-app's dotenv resolution as a babel plugin",
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "create-react-app",
+    "dotenv",
+    "universal-dotenv"
+  ],
   "homepage": "https://saiichihashimoto.github.io/babel-plugin-universal-dotenv/",
   "bugs": {
     "url": "https://github.com/saiichihashimoto/babel-plugin-universal-dotenv/issues"
@@ -10,6 +17,7 @@
     "type": "git",
     "url": "https://github.com/saiichihashimoto/babel-plugin-universal-dotenv.git"
   },
+  "license": "MIT",
   "files": [
     "lib"
   ],
