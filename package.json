@@ -1,5 +1,6 @@
 {
   "name": "babel-plugin-universal-dotenv",
+  "version": "0.0.0-development",
   "description": "A shameless copy of create-react-app's dotenv resolution as a babel plugin",
   "homepage": "https://saiichihashimoto.github.io/babel-plugin-universal-dotenv/",
   "bugs": {
