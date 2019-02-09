@@ -15,7 +15,7 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib --delete-dir-on-start --verbose --ignore **/*.spec.js",
+    "build": "babel src --out-dir lib --no-babelrc --source-maps --delete-dir-on-start --verbose --ignore **/*.spec.js",
     "test": "if [ -z \"$CI\" ]; then jest --watch; else jest --color --coverage; fi"
   },
   "config": {
