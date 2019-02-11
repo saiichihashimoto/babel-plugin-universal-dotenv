@@ -55,7 +55,7 @@ describe('babel-plugin-universal-dotenv', () => {
 		return expect(transformAsync('process.env.OTHERKEY;', options)).resolves.toHaveProperty('code', 'process.env.OTHERKEY || "VALUE/value";');
 	});
 
-	it('leaves environment variables alone', async() => {
+	it('leaves environment variables alone', async () => {
 		process.env.KEY = 'AVALUE';
 		process.env.KEY2 = 'BVALUE';
 
@@ -123,7 +123,7 @@ describe('babel-plugin-universal-dotenv', () => {
 				return expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
 			});
 
-			it('prioritizes by specificity', async() => {
+			it('prioritizes by specificity', async () => {
 				files = {
 					'.env':                   'KEY1=VALUE1\nKEY2=VALUE1\nKEY3=VALUE1\nKEY4=VALUE1',
 					'.env.local':             'KEY1=VALUE2\nKEY2=VALUE2\nKEY3=VALUE2',
@@ -194,7 +194,7 @@ describe('babel-plugin-universal-dotenv', () => {
 			return expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
 		});
 
-		it('prioritizes by specificity', async() => {
+		it('prioritizes by specificity', async () => {
 			files = {
 				'.env':            'KEY1=VALUE1\nKEY2=VALUE1\nKEY3=VALUE1',
 				'.env.test':       'KEY1=VALUE3\nKEY2=VALUE3',
@@ -262,7 +262,7 @@ describe('babel-plugin-universal-dotenv', () => {
 			return expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
 		});
 
-		it('prioritizes by specificity', async() => {
+		it('prioritizes by specificity', async () => {
 			files = {
 				'.env':                  'KEY1=VALUE1\nKEY2=VALUE1\nKEY3=VALUE1\nKEY4=VALUE1',
 				'.env.local':            'KEY1=VALUE2\nKEY2=VALUE2\nKEY3=VALUE2',
