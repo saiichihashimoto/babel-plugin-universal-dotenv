@@ -16,15 +16,19 @@ const relativePath = (filePath) => path.relative(process.cwd(), filePath);
 describe('babel-plugin-universal-dotenv', () => {
 	let files = {};
 
-	fs.existsSync.mockImplementation((filePath) => (
-		Object.prototype.hasOwnProperty.call(files, relativePath(filePath))
-	));
-	fs.readFileSync.mockImplementation((filePath, { encoding }) => (
-		Object.prototype.hasOwnProperty.call(files, relativePath(filePath)) && encoding === 'utf8' && files[relativePath(filePath)]
-	));
-
 	beforeEach(() => {
+		fs.existsSync.mockImplementation((filePath) => (
+			Object.prototype.hasOwnProperty.call(files, relativePath(filePath))
+		));
+		fs.readFileSync.mockImplementation((filePath, { encoding }) => (
+			Object.prototype.hasOwnProperty.call(files, relativePath(filePath)) && encoding === 'utf8' && files[relativePath(filePath)]
+		));
+	});
+
+	afterEach(() => {
 		files = {};
+
+		jest.resetAllMocks();
 	});
 
 	it('name=babel-plugin-universal-dotenv', () => expect(plugin({ types: {} }).name).toEqual('babel-plugin-universal-dotenv'));
