@@ -7,6 +7,10 @@
 
 [create-react-app's dotenv resolution](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#adding-development-environment-variables-in-env) as a babel plugin.
 
+*The environment variables from `.env` files are embedded using babel*. These environment variables are defined for you on `process.env`.
+
+`NODE_ENV` is also embedded and must be one of `production`, `test`, or `development`, defaulting to `development` in all other cases.
+
 # Adding Development Environment Variables In `.env`
 
 To define permanent environment variables, create a file called `.env` in the root of your project:
@@ -59,3 +63,8 @@ DOMAIN=www.example.com
 FOO=$DOMAIN/foo
 BAR=$DOMAIN/bar
 ```
+
+# Comparison with other packages
+
+- [create-react-app](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#adding-development-environment-variables-in-env) is the inspiration for this package. This plugin is unnecessary when using create-react-app, but brings the same functionality to other contexts.
+- [universal-dotenv](https://www.npmjs.com/package/universal-dotenv) was another inspiration. It modifies the rules from create-react-app to be universal. It needs to be `require`ed or `import`ed in the application entry point or webpack can use [`DefinePlugin`](https://www.npmjs.com/package/universal-dotenv#serialization). This plugin aims to bring similar functionality to babel. We consciously avoided the prefixing logic due to the environment variable leakage being less of an issue in a server-side context.
