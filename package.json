@@ -38,7 +38,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "dotenv": "6.2.0",
+    "dotenv": "7.0.0",
     "dotenv-expand": "5.0.0"
   },
   "devDependencies": {
