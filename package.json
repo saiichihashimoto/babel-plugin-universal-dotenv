@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "dotenv": "7.0.0",
-    "dotenv-expand": "5.0.0"
+    "dotenv-expand": "5.1.0"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
