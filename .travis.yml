@@ -6,6 +6,7 @@ branches:
     - /^v\d+\.\d+\.\d+$/
 after_success:
   - cat ./coverage/lcov.info | npx coveralls
+  - npx stryker-cli run
 jobs:
   include:
     - stage: release
