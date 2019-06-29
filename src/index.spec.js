@@ -72,7 +72,7 @@ describe('babel-plugin-universal-dotenv', () => {
 	});
 
 	['development', '', 'nonsense'].forEach((NODE_ENV) => {
-		describe.skip(`NODE_ENV=${NODE_ENV}`, () => {
+		describe(`NODE_ENV=${NODE_ENV}`, () => {
 			beforeAll(() => {
 				process.env.NODE_ENV = NODE_ENV;
 			});
@@ -143,7 +143,7 @@ describe('babel-plugin-universal-dotenv', () => {
 		});
 	});
 
-	describe.skip('NODE_ENV=production', () => {
+	describe('NODE_ENV=production', () => {
 		beforeAll(() => {
 			process.env.NODE_ENV = 'production';
 		});
@@ -213,7 +213,7 @@ describe('babel-plugin-universal-dotenv', () => {
 		});
 	});
 
-	describe.skip('NODE_ENV=test', () => {
+	describe('NODE_ENV=test', () => {
 		beforeAll(() => {
 			process.env.NODE_ENV = 'test';
 		});
