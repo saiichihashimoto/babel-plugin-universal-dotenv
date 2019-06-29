@@ -71,6 +71,8 @@ describe('babel-plugin-universal-dotenv', () => {
 		expect(process.env.KEY3).toBeUndefined();
 	});
 
+	it('ignores other objects', () => expect(transformAsync('obj.NODE_ENV;', options)).resolves.toHaveProperty('code', 'obj.NODE_ENV;'));
+
 	['development', '', 'nonsense'].forEach((NODE_ENV) => {
 		describe(`NODE_ENV=${NODE_ENV}`, () => {
 			beforeAll(() => {
