@@ -10,6 +10,9 @@ notifications:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
+script:
+  - npm test
+  - npx stryker-cli run
 after_success:
   - cat ./coverage/lcov.info | npx coveralls --verbose
 jobs:
