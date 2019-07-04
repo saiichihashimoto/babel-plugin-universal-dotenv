@@ -15,7 +15,7 @@ script:
   - npm test
   - npx stryker run
 after_success:
-  - cat ./coverage/lcov.info | npx coveralls --verbose
+  - cat ./coverage/lcov.info | npx coveralls
 jobs:
   include:
     - stage: release
