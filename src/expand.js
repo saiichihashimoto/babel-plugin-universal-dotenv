@@ -3,7 +3,7 @@
 
 export default function dotenvExpand(parsed) {
 	const interpolate = (env) => {
-		const matches = env.match(/\$([a-zA-Z0-9_]+)|\${([a-zA-Z0-9_]+)}/g) || [];
+		const matches = env.match(/\$(\w+)|\${(\w+)}/g) || [];
 
 		return matches.reduce((acc, match) => {
 			const key = match.replace(/\$|{|}/g, '');
