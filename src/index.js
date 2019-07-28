@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+
 import { parse } from 'dotenv';
+
 import { name } from '../package';
+
 import expand from './expand';
 
 const dotenvPath = path.resolve(process.cwd(), '.env');

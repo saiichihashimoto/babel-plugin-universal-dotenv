@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+/* eslint-disable require-unicode-regexp */
 // Modified dotenv-expand https://github.com/motdotla/dotenv-expand/blob/f315d40d05ef42031bbda4539c80e6d88c54253c/lib/main.js
 
 export default function dotenvExpand(parsed) {
@@ -26,6 +27,6 @@ export default function dotenvExpand(parsed) {
 
 			return acc;
 		},
-		{},
+		{}
 	);
 }
