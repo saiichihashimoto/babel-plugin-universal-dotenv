@@ -27,3 +27,7 @@ export default function universalDotenv({ types: { valueToNode, logicalExpressio
 		},
 	};
 }
+
+export {
+	expand,
+};
