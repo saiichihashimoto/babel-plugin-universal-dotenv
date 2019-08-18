@@ -32,16 +32,16 @@ afterEach(() => {
 
 it('name=babel-plugin-universal-dotenv', () => expect(plugin({ types: {} }).name).toStrictEqual('babel-plugin-universal-dotenv'));
 
-it('ignores empty code', () => expect(transformAsync('', options)).resolves.toHaveProperty('code', ''));
+it('ignores empty code', async () => expect(await transformAsync('', options)).toHaveProperty('code', ''));
 
-it('ignores unknown environment variables', () => expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;'));
+it('ignores unknown environment variables', async () => expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;'));
 
 it('expands environment variables', async () => {
 	process.env.TEST = 'TESTVALUE';
 
 	files = { '.env': 'KEY=$TEST' };
 
-	await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "TESTVALUE";');
+	expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "TESTVALUE";');
 });
 
 it('expands curly brace environment variables', async () => {
@@ -49,13 +49,13 @@ it('expands curly brace environment variables', async () => {
 
 	files = { '.env': 'KEY=${TEST}' }; // eslint-disable-line no-template-curly-in-string
 
-	await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "OTHERTESTVALUE";');
+	expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "OTHERTESTVALUE";');
 });
 
 it('recursively expands environment variables', async () => {
 	files = { '.env': 'KEY=VALUE\nOTHERKEY=$KEY/value' };
 
-	await expect(transformAsync('process.env.OTHERKEY;', options)).resolves.toHaveProperty('code', 'process.env.OTHERKEY || "VALUE/value";');
+	expect(await transformAsync('process.env.OTHERKEY;', options)).toHaveProperty('code', 'process.env.OTHERKEY || "VALUE/value";');
 });
 
 it('doesn\'t mutate process.env', async () => {
@@ -64,14 +64,14 @@ it('doesn\'t mutate process.env', async () => {
 
 	files = { '.env': 'KEY=ANOTHERVALUE\nKEY3=CVALUE' };
 
-	await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "ANOTHERVALUE";');
+	expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "ANOTHERVALUE";');
 
 	expect(process.env.KEY).toStrictEqual('AVALUE');
 	expect(process.env.KEY2).toStrictEqual('BVALUE');
 	expect(process.env.KEY3).toBeUndefined();
 });
 
-it('ignores other objects', () => expect(transformAsync('obj.NODE_ENV;', options)).resolves.toHaveProperty('code', 'obj.NODE_ENV;'));
+it('ignores other objects', async () => expect(await transformAsync('obj.NODE_ENV;', options)).toHaveProperty('code', 'obj.NODE_ENV;'));
 
 ['development', '', 'nonsense'].forEach((NODE_ENV) => {
 	describe(`NODE_ENV=${NODE_ENV}`, () => {
@@ -79,54 +79,54 @@ it('ignores other objects', () => expect(transformAsync('obj.NODE_ENV;', options
 			process.env.NODE_ENV = NODE_ENV;
 		});
 
-		it('inlines NODE_ENV=development', () => expect(transformAsync('process.env.NODE_ENV;', options)).resolves.toHaveProperty('code', '"development";'));
+		it('inlines NODE_ENV=development', async () => expect(await transformAsync('process.env.NODE_ENV;', options)).toHaveProperty('code', '"development";'));
 
 		it('.env', async () => {
 			files = { '.env': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 		});
 
 		it('.env.local', async () => {
 			files = { '.env.local': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 		});
 
 		it('.env.development', async () => {
 			files = { '.env.development': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 		});
 
 		it('.env.development.local', async () => {
 			files = { '.env.development.local': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 		});
 
 		it('not .env.production', async () => {
 			files = { '.env.production': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 		});
 
 		it('not .env.production.local', async () => {
 			files = { '.env.production.local': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 		});
 
 		it('not .env.test', async () => {
 			files = { '.env.test': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 		});
 
 		it('not .env.test.local', async () => {
 			files = { '.env.test.local': 'KEY=VALUE' };
 
-			await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+			expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 		});
 
 		it('prioritizes by specificity', async () => {
@@ -137,10 +137,10 @@ it('ignores other objects', () => expect(transformAsync('obj.NODE_ENV;', options
 				'.env.development.local': 'KEY1=VALUE4',
 			};
 
-			await expect(transformAsync('process.env.KEY1;', options)).resolves.toHaveProperty('code', 'process.env.KEY1 || "VALUE4";');
-			await expect(transformAsync('process.env.KEY2;', options)).resolves.toHaveProperty('code', 'process.env.KEY2 || "VALUE3";');
-			await expect(transformAsync('process.env.KEY3;', options)).resolves.toHaveProperty('code', 'process.env.KEY3 || "VALUE2";');
-			await expect(transformAsync('process.env.KEY4;', options)).resolves.toHaveProperty('code', 'process.env.KEY4 || "VALUE1";');
+			expect(await transformAsync('process.env.KEY1;', options)).toHaveProperty('code', 'process.env.KEY1 || "VALUE4";');
+			expect(await transformAsync('process.env.KEY2;', options)).toHaveProperty('code', 'process.env.KEY2 || "VALUE3";');
+			expect(await transformAsync('process.env.KEY3;', options)).toHaveProperty('code', 'process.env.KEY3 || "VALUE2";');
+			expect(await transformAsync('process.env.KEY4;', options)).toHaveProperty('code', 'process.env.KEY4 || "VALUE1";');
 		});
 	});
 });
@@ -150,54 +150,54 @@ describe('NODE_ENV=production', () => {
 		process.env.NODE_ENV = 'production';
 	});
 
-	it('inlines NODE_ENV=production', () => expect(transformAsync('process.env.NODE_ENV;', options)).resolves.toHaveProperty('code', '"production";'));
+	it('inlines NODE_ENV=production', async () => expect(await transformAsync('process.env.NODE_ENV;', options)).toHaveProperty('code', '"production";'));
 
 	it('.env', async () => {
 		files = { '.env': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('.env.local', async () => {
 		files = { '.env.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('.env.production', async () => {
 		files = { '.env.production': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('.env.production.local', async () => {
 		files = { '.env.production.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('not .env.development', async () => {
 		files = { '.env.development': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.development.local', async () => {
 		files = { '.env.development.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.test', async () => {
 		files = { '.env.test': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.test.local', async () => {
 		files = { '.env.test.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('prioritizes by specificity', async () => {
@@ -208,10 +208,10 @@ describe('NODE_ENV=production', () => {
 			'.env.production.local': 'KEY1=VALUE4',
 		};
 
-		await expect(transformAsync('process.env.KEY1;', options)).resolves.toHaveProperty('code', 'process.env.KEY1 || "VALUE4";');
-		await expect(transformAsync('process.env.KEY2;', options)).resolves.toHaveProperty('code', 'process.env.KEY2 || "VALUE3";');
-		await expect(transformAsync('process.env.KEY3;', options)).resolves.toHaveProperty('code', 'process.env.KEY3 || "VALUE2";');
-		await expect(transformAsync('process.env.KEY4;', options)).resolves.toHaveProperty('code', 'process.env.KEY4 || "VALUE1";');
+		expect(await transformAsync('process.env.KEY1;', options)).toHaveProperty('code', 'process.env.KEY1 || "VALUE4";');
+		expect(await transformAsync('process.env.KEY2;', options)).toHaveProperty('code', 'process.env.KEY2 || "VALUE3";');
+		expect(await transformAsync('process.env.KEY3;', options)).toHaveProperty('code', 'process.env.KEY3 || "VALUE2";');
+		expect(await transformAsync('process.env.KEY4;', options)).toHaveProperty('code', 'process.env.KEY4 || "VALUE1";');
 	});
 });
 
@@ -220,54 +220,54 @@ describe('NODE_ENV=test', () => {
 		process.env.NODE_ENV = 'test';
 	});
 
-	it('inlines NODE_ENV=test', () => expect(transformAsync('process.env.NODE_ENV;', options)).resolves.toHaveProperty('code', '"test";'));
+	it('inlines NODE_ENV=test', async () => expect(await transformAsync('process.env.NODE_ENV;', options)).toHaveProperty('code', '"test";'));
 
 	it('.env', async () => {
 		files = { '.env': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('.env.test', async () => {
 		files = { '.env.test': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('.env.test.local', async () => {
 		files = { '.env.test.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY || "VALUE";');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY || "VALUE";');
 	});
 
 	it('not .env.local', async () => {
 		files = { '.env.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.development', async () => {
 		files = { '.env.development': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.development.local', async () => {
 		files = { '.env.development.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.production', async () => {
 		files = { '.env.production': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('not .env.production.local', async () => {
 		files = { '.env.production.local': 'KEY=VALUE' };
 
-		await expect(transformAsync('process.env.KEY;', options)).resolves.toHaveProperty('code', 'process.env.KEY;');
+		expect(await transformAsync('process.env.KEY;', options)).toHaveProperty('code', 'process.env.KEY;');
 	});
 
 	it('prioritizes by specificity', async () => {
@@ -277,8 +277,8 @@ describe('NODE_ENV=test', () => {
 			'.env.test.local': 'KEY1=VALUE4',
 		};
 
-		await expect(transformAsync('process.env.KEY1;', options)).resolves.toHaveProperty('code', 'process.env.KEY1 || "VALUE4";');
-		await expect(transformAsync('process.env.KEY2;', options)).resolves.toHaveProperty('code', 'process.env.KEY2 || "VALUE3";');
-		await expect(transformAsync('process.env.KEY3;', options)).resolves.toHaveProperty('code', 'process.env.KEY3 || "VALUE1";');
+		expect(await transformAsync('process.env.KEY1;', options)).toHaveProperty('code', 'process.env.KEY1 || "VALUE4";');
+		expect(await transformAsync('process.env.KEY2;', options)).toHaveProperty('code', 'process.env.KEY2 || "VALUE3";');
+		expect(await transformAsync('process.env.KEY3;', options)).toHaveProperty('code', 'process.env.KEY3 || "VALUE1";');
 	});
 });
