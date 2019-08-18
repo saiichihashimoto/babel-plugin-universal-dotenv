@@ -18,9 +18,7 @@ const relativePath = (filePath) => path.relative(process.cwd(), filePath);
 let files = {};
 
 beforeEach(() => {
-	fs.existsSync.mockImplementation(
-		(filePath) => Object.prototype.hasOwnProperty.call(files, relativePath(filePath))
-	);
+	fs.existsSync.mockImplementation((filePath) => relativePath(filePath) in files);
 	fs.readFileSync.mockImplementation((filePath, { encoding }) => Object.prototype.hasOwnProperty.call(files, relativePath(filePath)) && encoding === 'utf8' && files[relativePath(filePath)]);
 });
 
