@@ -4,7 +4,7 @@
 [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/saiichihashimoto/babel-plugin-universal-dotenv/master)](https://stryker-mutator.github.io)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![Greenkeeper badge](https://badges.greenkeeper.io/saiichihashimoto/babel-plugin-universal-dotenv.svg)](https://greenkeeper.io/)
+
 
 [create-react-app's dotenv resolution](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#adding-development-environment-variables-in-env) as a babel plugin.
 
