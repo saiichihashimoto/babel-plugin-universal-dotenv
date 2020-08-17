@@ -52,7 +52,7 @@
     "cz-conventional-changelog": "3.2.0",
     "eslint-config-saiichihashimoto": "2.2.16",
     "husky": "4.2.3",
-    "jest": "24.1.0",
+    "jest": "26.4.0",
     "lint-my-app": "3.7.49"
   },
   "engines": {
